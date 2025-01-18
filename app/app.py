@@ -1,13 +1,11 @@
 from flask import Flask
-from flask_smorest import Api, Blueprint
+from flask_smorest import Api
 from app.config import APIConfig
+from app.routes.route_user import blueprint_user
 
 server = Flask(__name__)
 server.config.from_object(APIConfig)
 
 api = Api(server)
-
-blueprint_user = Blueprint(
-    "user", "user", url_prefix="/user", description="User API")
 
 api.register_blueprint(blueprint_user)
