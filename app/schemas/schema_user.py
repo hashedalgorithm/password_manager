@@ -1,10 +1,12 @@
 from marshmallow.schema import Schema
 from marshmallow import fields
+from app.models import UserRole
 
 
 class SchemaPostUser(Schema):
-    email = fields.String(required=True)
     name = fields.String(required=True)
+    email = fields.String(required=True)
+    role = fields.Enum(UserRole, required=True)
 
 
 class SchemaUser(Schema):
