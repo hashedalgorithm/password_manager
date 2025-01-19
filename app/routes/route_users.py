@@ -21,15 +21,15 @@ class ParametersCollectionUsersPost(Schema):
     role = fields.Enum(UserRole)
 
 
-@blueprint_users.route("/user/<string:user_id>")
+@blueprint_users.route("/user/<string:email>")
 class CollectionUser(MethodView):
 
     @blueprint_users.response(status_code=200, schema=SchemaUser)
-    def get(self, user_id):
-        user = db.session.query(ModelUser).filter_by(id=user_id).first()
+    def get(self, email):
+        user = db.session.query(ModelUser).filter_by(email=email).first()
 
         if not user:
-            return {"message": f"User not found - {user_id}"}, 404
+            return {"message": f"User not found - {email}"}, 404
 
         return user
 
