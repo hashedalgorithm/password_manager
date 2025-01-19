@@ -2,7 +2,7 @@ from flask_sqlalchemy import SQLAlchemy
 from sqlalchemy import text
 from datetime import datetime
 from app.models.model_policy import ModelPolicy
-from app.models.model_user import ModelUser
+from app.models.model_user import ModelUser, UserRole
 
 
 def init_tables(db: SQLAlchemy):
@@ -20,12 +20,14 @@ def inti_users(db):
             id INTEGER PRIMARY KEY AUTOINCREMENT,
             email TEXT NOT NULL UNIQUE,
             name TEXT NOT NULL,
+            role TEXT NOT NULL,
             created_at TEXT NOT NULL
         )
     '''))
     admin = ModelUser(
         email='system@admin.com',
         name='admin',
+        role=UserRole.ADMIN.value,
         created_at=datetime.now().isoformat()
     )
 
@@ -43,7 +45,7 @@ def init_policies(db):
             length INTEGER NOT NULL,
             upper_case_length INTEGER NOT NULL,
             numbers_length INTEGER NOT NULL,
-            special_char_length INTEGER NOT NULL,
+            special_char_length INTEGER NOT NULL
         )
     '''))
     default_policy = ModelPolicy(
@@ -53,8 +55,8 @@ def init_policies(db):
         status="active",
         special_char_length=2,
         created_by='system',
-        created_at=datetime.now().isoformat(),
-        updated_at=datetime.now().isoformat()
+        created_at=datetime.now(),
+        updated_at=datetime.now()
     )
 
     db.session.add(default_policy)

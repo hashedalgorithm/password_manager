@@ -4,7 +4,7 @@ from app.models import PolicyStatus
 
 
 class SchemaPostPolicy(Schema):
-    created_by = fields.String(required=True)
+    created_by = fields.DateTime(required=True)
     length = fields.Int(required=True, default=12)
     upper_case_length = fields.Int(required=True, default=2)
     numbers_length = fields.Int(required=True, default=2)
@@ -14,9 +14,9 @@ class SchemaPostPolicy(Schema):
 class SchemaPolicy(Schema):
     id = fields.Int(dump_only=True)
     status = fields.Enum(PolicyStatus, default="inactive")
-    created_at = fields.String(required=True)
-    updated_at = fields.String(required=True)
-    created_by = fields.String(required=True)
+    created_at = fields.DateTime(required=True)
+    updated_at = fields.DateTime(required=True)
+    created_by = fields.DateTime(required=True)
     length = fields.Int(required=True, default=12)
     upper_case_length = fields.Int(required=True, default=2)
     numbers_length = fields.Int(required=True, default=2)
