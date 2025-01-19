@@ -1,8 +1,8 @@
 from flask_sqlalchemy import SQLAlchemy
 from sqlalchemy import text
+from datetime import datetime
 from app.models.model_policy import ModelPolicy
 from app.models.model_user import ModelUser
-from datetime import datetime
 
 
 def init_tables(db: SQLAlchemy):
