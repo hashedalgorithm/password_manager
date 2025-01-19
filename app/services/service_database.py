@@ -35,6 +35,7 @@ def init_policies(db):
     db.session.execute(text('''
         CREATE TABLE IF NOT EXISTS policies (
             id INTEGER PRIMARY KEY AUTOINCREMENT,
+            status TEXT NOT NULL,
             created_at TEXT NOT NULL,
             updated_at TEXT NOT NULL,
             created_by TEXT NOT NULL,
@@ -48,6 +49,7 @@ def init_policies(db):
         length=12,
         upper_case_length=2,
         numbers_length=2,
+        status="active",
         special_char_length=2,
         created_by='system',
         created_at=datetime.now().isoformat(),
