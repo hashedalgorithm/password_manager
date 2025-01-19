@@ -9,7 +9,7 @@ class PolicyStatus(Enum):
 
 
 class ModelPolicy(db.Model):
-    __tablename__ = "policy"
+    __tablename__ = "policies"
 
     id = db.Column(db.Integer, primary_key=True)
     status = db.Column(db.Enum(PolicyStatus), nullable=False,
