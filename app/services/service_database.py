@@ -9,6 +9,7 @@ def init_tables(db: SQLAlchemy):
 
     inti_users(db)
     init_policies(db)
+    init_password(db)
 
     db.session.commit()
 
@@ -57,3 +58,23 @@ def init_policies(db):
     )
 
     db.session.add(default_policy)
+
+
+def init_password(db):
+    db.session.execute(text('''
+        CREATE TABLE IF NOT EXISTS passwords (
+            id INTEGER PRIMARY KEY AUTOINCREMENT,
+            password_hash TEXT NOT NULL,
+            account_provider TEXT NOT NULL,
+            account_provider_email TEXT,
+            account_provider_username TEXT,
+            user_id INTEGER NOT NULL,
+            user_email TEXT NOT NULL,
+            policy_id INTEGER NOT NULL,
+            created_at TEXT NOT NULL,
+            updated_at TEXT NOT NULL,
+            FOREIGN KEY(user_id) REFERENCES users(id),
+            FOREIGN KEY(user_email) REFERENCES users(email),
+            FOREIGN KEY(policy_id) REFERENCES policies(id)
+        )
+    '''))
