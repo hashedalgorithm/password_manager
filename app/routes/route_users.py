@@ -4,32 +4,49 @@ from app.schemas import SchemaUser
 from marshmallow.schema import Schema
 from marshmallow import fields
 from datetime import datetime
-
-users = [{
-    "id": 1,
-    "email": "sample@gmail.com",
-    "name": "sample",
-    "created_at": datetime.now().isoformat()
-}]
+from app.database import db
+from app.models.model_user import UserRole, ModelUser
 
 blueprint_users = Blueprint(
-    "user", "user", url_prefix="/api/users", description="User API")
+    "users", "users", url_prefix="/api/users", description="User API")
 
 
 class ParamtersCollectionUserGet(Schema):
     user_id = fields.String()
 
 
-@blueprint_users.route("/")
-class CollectionUsers(MethodView):
+class ParametersCollectionUsersPost(Schema):
+    name = fields.String()
+    email = fields.String()
+    role = fields.Enum(UserRole)
 
-    @blueprint_users.arguments(ParamtersCollectionUserGet, location="query")
+
+@blueprint_users.route("/user/<string:user_id>")
+class CollectionUser(MethodView):
+
     @blueprint_users.response(status_code=200, schema=SchemaUser)
-    def get(self, parameters):
-        user_id = parameters['user_id']
+    def get(self, user_id):
+        user = db.session.query(ModelUser).filter_by(id=user_id).first()
 
-        return next((user for user in users if user["id"] == int(user_id)), None)
+        if not user:
+            return {"message": f"User not found - {user_id}"}, 404
 
+        return user
+
+
+@blueprint_users.route("/user")
+class CollectionUser(MethodView):
+
+    @blueprint_users.arguments(ParametersCollectionUsersPost, location="json")
     @blueprint_users.response(status_code=201, schema=SchemaUser)
     def post(self, user):
-        pass
+        new_user = ModelUser(
+            email=user['email'],
+            name=user['name'],
+            created_at=datetime.now().isoformat()
+        )
+
+        db.session.add(new_user)
+        db.session.commit()
+
+        return new_user, 201

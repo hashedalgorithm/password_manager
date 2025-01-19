@@ -1,1 +1,1 @@
-from app.models.model_user import ModelClass
+from app.models.model_user import ModelUser
