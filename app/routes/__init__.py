@@ -1,3 +1,3 @@
-from app.routes.route_user import blueprint_user
+from app.routes.route_users import blueprint_users
 
 __all__ = ['blueprint_user']
