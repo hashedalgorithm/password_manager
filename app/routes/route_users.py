@@ -1,28 +1,18 @@
 from flask.views import MethodView
 from flask_smorest import Blueprint
-from app.schemas import SchemaUser
 from marshmallow.schema import Schema
 from marshmallow import fields
 from datetime import datetime
 from app.database import db
-from app.models.model_user import UserRole, ModelUser
+from app.schemas import SchemaUser, SchemaPostUser
+from app.models import UserRole, ModelUser
 
 blueprint_users = Blueprint(
     "users", "users", url_prefix="/api/users", description="User API")
 
 
-class ParamtersCollectionUserGet(Schema):
-    user_id = fields.String()
-
-
-class ParametersCollectionUsersPost(Schema):
-    name = fields.String()
-    email = fields.String()
-    role = fields.Enum(UserRole)
-
-
 @blueprint_users.route("/user/<string:email>")
-class CollectionUser(MethodView):
+class CollectionUserId(MethodView):
 
     @blueprint_users.response(status_code=200, schema=SchemaUser)
     def get(self, email):
@@ -37,7 +27,7 @@ class CollectionUser(MethodView):
 @blueprint_users.route("/user")
 class CollectionUser(MethodView):
 
-    @blueprint_users.arguments(ParametersCollectionUsersPost, location="json")
+    @blueprint_users.arguments(SchemaPostUser, location="json")
     @blueprint_users.response(status_code=201, schema=SchemaUser)
     def post(self, user):
         new_user = ModelUser(
