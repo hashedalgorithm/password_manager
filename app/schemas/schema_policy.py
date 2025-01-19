@@ -1,6 +1,6 @@
 from marshmallow.schema import Schema
 from marshmallow import fields
-from app.models.model_policy import PolicyStatus
+from app.models import PolicyStatus
 
 
 class SchemaPostPolicy(Schema):
