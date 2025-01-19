@@ -18,7 +18,7 @@ class ModelPolicy(db.Model):
     updated_at = db.Column(db.DateTime, nullable=False,
                            default=datetime.now, onupdate=datetime.now)
     created_by = db.Column(db.String(50), nullable=False)
-    length = db.Column(db.Number, nullable=False, default=12)
-    upper_case_length = db.Column(db.Number, nullable=False, default=1)
-    numbers_length = db.Column(db.Number, nullable=False, default=1)
-    special_char_length = db.Column(db.Number, nullable=False, default=1)
+    length = db.Column(db.Integer, nullable=False, default=12)
+    upper_case_length = db.Column(db.Integer, nullable=False, default=2)
+    numbers_length = db.Column(db.Integer, nullable=False, default=2)
+    special_char_length = db.Column(db.Integer, nullable=False, default=2)
