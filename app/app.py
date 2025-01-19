@@ -3,7 +3,7 @@ from flask_smorest import Api
 from app.config import APIConfig
 from app.routes.route_user import blueprint_user
 from flask_sqlalchemy import SQLAlchemy
-
+from app.services.service_database import init_tables
 
 server = Flask(__name__)
 server.config.from_object(APIConfig)
@@ -16,6 +16,7 @@ db = SQLAlchemy(server)
 
 with server.app_context():
     db.create_all()
+    init_tables(db)
 
 
 api.register_blueprint(blueprint_user)
