@@ -1,9 +1,9 @@
 from flask import Flask
 from flask_smorest import Api
 from app.config import APIConfig
-from app.routes.route_users import blueprint_users
-from app.services.service_database import init_tables
 from app.database import db
+from app.services import init_tables
+from app.routes import blueprint_users, blueprint_policies
 
 server = Flask(__name__)
 server.config.from_object(APIConfig)
@@ -20,3 +20,4 @@ with server.app_context():
 
 
 api.register_blueprint(blueprint_users)
+api.register_blueprint(blueprint_policies)
