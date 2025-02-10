@@ -2,7 +2,7 @@ from flask.views import MethodView
 from flask_smorest import Blueprint
 from marshmallow.schema import Schema
 from marshmallow import fields
-from datetime import timedelta
+from datetime import timedelta, datetime
 from app.database import db
 from app.schemas import SchemaUser, SchemaPostUser, SchemaGetUser
 from app.models import UserRole, ModelUser
