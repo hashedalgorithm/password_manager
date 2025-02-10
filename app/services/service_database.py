@@ -53,7 +53,7 @@ def init_policies(db):
     '''))
 
     existing_policy = db.session.execute(text(
-        'SELECT * FROM policies WHERE status = :status'), {'status': PolicyStatus.ACTIVE.value}).fetchone()
+        'SELECT * FROM policies WHERE status = :status'), {'status': PolicyStatus.ACTIVE.name}).fetchone()
 
     if not existing_policy:
         default_policy = ModelPolicy(
