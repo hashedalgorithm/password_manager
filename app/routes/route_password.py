@@ -5,8 +5,9 @@ from flask_jwt_extended import get_jwt, jwt_required
 
 from app.schemas import SchemaPassword, SchemaPostPasswordRequest, SchemaPostPasswordResponse
 from app.models import ModelPassword, ModelPolicy
-from app.services import generatePassword
+from app.services import generatePassword, check_if_password_is_leaked
 from bcrypt import hashpw, gensalt
+
 
 blueprint_password = Blueprint(
     'passwords', "passwords", url_prefix="/api/passwords", description="Passwords API")
@@ -31,6 +32,9 @@ class CollectionPasswords(MethodView):
 
         generated_password = generatePassword(active_policy.length, active_policy.upper_case_length,
                                               active_policy.numbers_length, active_policy.special_char_length)
+
+        if check_if_password_is_leaked(generated_password):
+            return f"Generated password has been compromised", 400
 
         hashed_password = hashpw(generated_password.encode('utf-8'), gensalt())
 
