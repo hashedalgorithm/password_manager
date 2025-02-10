@@ -1,5 +1,6 @@
 from flask import Flask
 from flask_smorest import Api
+from flask_jwt_extended import JWTManager
 from app.config import APIConfig
 from app.database import db
 from app.services import init_tables
@@ -7,6 +8,7 @@ from app.routes import blueprint_users, blueprint_policies, blueprint_hibp
 
 server = Flask(__name__)
 server.config.from_object(APIConfig)
+jwt = JWTManager(server)
 
 api = Api(server)
 

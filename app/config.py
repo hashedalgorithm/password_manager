@@ -9,3 +9,6 @@ class APIConfig:
     OPENAPI_REDOC_UI_URL = "https://cdn.jsdelivr.net/npm/redoc@next/bundles/redoc.standalone.js"
     SQLALCHEMY_DATABASE_URI = "sqlite:///database.db"
     SQLALCHEMY_TRACK_MODIFICATIONS = False
+    SECRET_KEY = "jwt_secret"
+    JWT_SECRET_KEY = "this is a secret key"
+    JWT_TOKEN_LOCATION = ["headers"]
