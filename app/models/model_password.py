@@ -9,8 +9,6 @@ class ModelPassword(db.Model):
     password_hash = db.Column(db.String(128), nullable=False)
     account_provider = db.Column(db.String(128), nullable=False)
     account_provider_email = db.Column(db.String(128), nullable=True)
-    account_provider_username = db.Column(db.String(128), nullable=True)
-    user_id = db.Column(db.Integer, db.ForeignKey('users.id'), nullable=False)
     user_email = db.Column(db.String(100), db.ForeignKey(
         'users.email'), nullable=False)
     policy_id = db.Column(db.Integer, db.ForeignKey(
