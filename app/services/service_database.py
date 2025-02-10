@@ -51,18 +51,22 @@ def init_policies(db):
             special_char_length INTEGER NOT NULL
         )
     '''))
-    default_policy = ModelPolicy(
-        length=12,
-        upper_case_length=2,
-        numbers_length=2,
-        status="active",
-        special_char_length=2,
-        created_by='system',
-        created_at=datetime.now(),
-        updated_at=datetime.now()
-    )
 
-    db.session.add(default_policy)
+    existing_policy = db.session.execute(text(
+        'SELECT * FROM policies WHERE status = :status'), {'status': 'active'}).fetchone()
+
+    if not existing_policy:
+        default_policy = ModelPolicy(
+            length=12,
+            upper_case_length=2,
+            numbers_length=2,
+            status="active",
+            special_char_length=2,
+            created_by='system',
+            created_at=datetime.now(),
+            updated_at=datetime.now()
+        )
+        db.session.add(default_policy)
 
 
 def init_password(db):
@@ -72,8 +76,6 @@ def init_password(db):
             password_hash TEXT NOT NULL,
             account_provider TEXT NOT NULL,
             account_provider_email TEXT,
-            account_provider_username TEXT,
-            user_id INTEGER NOT NULL,
             user_email TEXT NOT NULL,
             policy_id INTEGER NOT NULL,
             created_at TEXT NOT NULL,
