@@ -6,12 +6,10 @@ from app.models import UserRole
 class SchemaPostUser(Schema):
     name = fields.String(required=True)
     email = fields.String(required=True)
-    role = fields.Enum(UserRole, required=True)
 
 
 class SchemaGetUser(Schema):
     email = fields.Email(required=True)
-    role = fields.Enum(UserRole, required=True)
     token = fields.String(required=True)
 
 

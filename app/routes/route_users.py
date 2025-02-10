@@ -22,10 +22,9 @@ class CollectionUserId(MethodView):
         if not user:
             return {"message": f"User not found - {email}"}, 404
 
-        access_token = create_access_token(identity=user.email, additional_claims={
-                                           "email": user.email, "role": user.role})
+        access_token = create_access_token(identity=user.email)
 
-        return {"email": email, "role": user.role, "token": access_token}
+        return {"email": email, "token": access_token}
 
 
 @blueprint_users.route("/user")
@@ -37,6 +36,7 @@ class CollectionUser(MethodView):
         new_user = ModelUser(
             email=user['email'],
             name=user['name'],
+            role=UserRole.USER,
             created_at=datetime.now().isoformat()
         )
 
