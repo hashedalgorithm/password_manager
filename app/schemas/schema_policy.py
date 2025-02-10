@@ -4,7 +4,6 @@ from app.models import PolicyStatus
 
 
 class SchemaPostPolicy(Schema):
-    created_by = fields.String(required=True)
     length = fields.Int(required=True, default=12)
     upper_case_length = fields.Int(required=True, default=2)
     numbers_length = fields.Int(required=True, default=2)

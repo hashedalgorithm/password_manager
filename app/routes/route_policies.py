@@ -1,11 +1,13 @@
 from flask.views import MethodView
 from flask_smorest import Blueprint
 from marshmallow.schema import Schema
+from flask_jwt_extended import get_jwt, jwt_required
 from marshmallow import fields
 from datetime import datetime
+
 from app.database import db
 from app.schemas import SchemaPostPolicy, SchemaPolicy
-from app.models import PolicyStatus, ModelPolicy
+from app.models import PolicyStatus, ModelPolicy, UserRole
 
 blueprint_policies = Blueprint(
     "policies", "policies", url_prefix="/api/policies", description="Policies API")
@@ -13,7 +15,7 @@ blueprint_policies = Blueprint(
 
 @blueprint_policies.route("/policy/<string:id>")
 class CollectionPolicyId(MethodView):
-
+    @jwt_required
     @blueprint_policies.response(status_code=200, schema=SchemaPolicy)
     def get(self, id):
         policy = db.session.query(ModelPolicy).filter_by(id=id).first()
@@ -26,7 +28,7 @@ class CollectionPolicyId(MethodView):
 
 @blueprint_policies.route("/policy/active")
 class CollectionPolicyStatus(MethodView):
-
+    @jwt_required
     @blueprint_policies.response(status_code=200, schema=SchemaPolicy)
     def get(self):
         policy = db.session.query(ModelPolicy).filter_by(
@@ -40,13 +42,22 @@ class CollectionPolicyStatus(MethodView):
 
 @blueprint_policies.route("/policy")
 class CollectionPolicy(MethodView):
-
+    @jwt_required
     @blueprint_policies.arguments(SchemaPostPolicy, location="json")
     @blueprint_policies.response(status_code=201, schema=SchemaPolicy)
     def post(self, policy):
+        user_claims = get_jwt()
+        user_email = user_claims.get("email")
+        user_role = user_claims.get("role")
+
+        if user_role != UserRole.ADMIN.value:
+            return f"Forbidden", 404
+        if not user_email:
+            return f"Forbidden", 404
+
         new_policy = ModelPolicy(
-            status='inactive',
-            created_by=policy['created_by'],
+            status=PolicyStatus.INACTIVE,
+            created_by=user_email,
             length=policy['length'],
             upper_case_length=policy['upper_case_length'],
             numbers_length=policy['numbers_length'],
