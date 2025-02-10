@@ -1,7 +1,7 @@
 from flask_sqlalchemy import SQLAlchemy
 from sqlalchemy import text
 from datetime import datetime
-from app.models.model_policy import ModelPolicy
+from app.models.model_policy import ModelPolicy, PolicyStatus
 from app.models.model_user import ModelUser, UserRole
 
 
@@ -53,18 +53,18 @@ def init_policies(db):
     '''))
 
     existing_policy = db.session.execute(text(
-        'SELECT * FROM policies WHERE status = :status'), {'status': 'active'}).fetchone()
+        'SELECT * FROM policies WHERE status = :status'), {'status': PolicyStatus.ACTIVE.value}).fetchone()
 
     if not existing_policy:
         default_policy = ModelPolicy(
             length=12,
             upper_case_length=2,
             numbers_length=2,
-            status="active",
+            status=PolicyStatus.ACTIVE,
             special_char_length=2,
             created_by='system',
-            created_at=datetime.now(),
-            updated_at=datetime.now()
+            created_at=datetime.now().isoformat(),
+            updated_at=datetime.now().isoformat()
         )
         db.session.add(default_policy)
 

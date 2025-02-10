@@ -24,6 +24,20 @@ class CollectionPolicyId(MethodView):
         return policy
 
 
+@blueprint_policies.route("/policy/active")
+class CollectionPolicyStatus(MethodView):
+
+    @blueprint_policies.response(status_code=200, schema=SchemaPolicy)
+    def get(self, status):
+        policy = db.session.query(ModelPolicy).filter_by(
+            status="ACTIVE").first()
+
+        if not policy:
+            return {"message": f"Policy not found - {id}"}, 404
+
+        return policy
+
+
 @blueprint_policies.route("/policy")
 class CollectionPolicy(MethodView):
 
