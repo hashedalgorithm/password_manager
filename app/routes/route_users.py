@@ -22,7 +22,9 @@ class CollectionUserId(MethodView):
         if not user:
             return {"message": f"User not found - {email}"}, 404
 
-        access_token = create_access_token(identity=user.email)
+        access_token = create_access_token(identity=user.email, additional_claims={
+                                           "email": user.email, "role": user.role})
+
         return {"email": email, "role": user.role, "token": access_token}
 
 
