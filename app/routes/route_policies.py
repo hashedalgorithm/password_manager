@@ -28,7 +28,7 @@ class CollectionPolicyId(MethodView):
 class CollectionPolicyStatus(MethodView):
 
     @blueprint_policies.response(status_code=200, schema=SchemaPolicy)
-    def get(self, status):
+    def get(self):
         policy = db.session.query(ModelPolicy).filter_by(
             status="ACTIVE").first()
 
