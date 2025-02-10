@@ -1,6 +1,7 @@
-from flask import Blueprint, jsonify
+from flask import jsonify
+from flask_smorest import Blueprint
 from flask.views import MethodView
-from flask_jwt_extended import get_jwt_identity, verify_jwt_in_request
+from flask_jwt_extended import get_jwt, jwt_required
 
 from app.schemas import SchemaPassword, SchemaPostPasswordRequest, SchemaPostPasswordResponse
 from app.models import ModelPassword, ModelPolicy
@@ -13,12 +14,11 @@ blueprint_password = Blueprint(
 
 @blueprint_password.route("/generate")
 class CollectionPasswords(MethodView):
-
+    @jwt_required()
     @blueprint_password.arguments(SchemaPostPasswordRequest, location="json")
     @blueprint_password.response(status_code=201, schema=SchemaPostPasswordResponse)
     def post(self, password):
-        verify_jwt_in_request()
-        user_claims = get_jwt_identity()
+        user_claims = get_jwt()
         user_email = user_claims.get("email")
 
         if not user_email:

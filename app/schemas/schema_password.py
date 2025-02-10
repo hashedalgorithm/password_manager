@@ -16,7 +16,6 @@ class SchemaPassword(Schema):
 class SchemaPostPasswordRequest(Schema):
     account_provider = fields.String(required=True)
     account_provider_email = fields.String(required=True)
-    user_email = fields.String(dump_only=True)
 
 
 class SchemaPostPasswordResponse(Schema):
