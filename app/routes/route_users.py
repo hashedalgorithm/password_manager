@@ -4,8 +4,9 @@ from marshmallow.schema import Schema
 from marshmallow import fields
 from datetime import datetime
 from app.database import db
-from app.schemas import SchemaUser, SchemaPostUser
+from app.schemas import SchemaUser, SchemaPostUser, SchemaGetUser
 from app.models import UserRole, ModelUser
+from flask_jwt_extended import create_access_token
 
 blueprint_users = Blueprint(
     "users", "users", url_prefix="/api/users", description="User API")
@@ -14,14 +15,15 @@ blueprint_users = Blueprint(
 @blueprint_users.route("/user/<string:email>")
 class CollectionUserId(MethodView):
 
-    @blueprint_users.response(status_code=200, schema=SchemaUser)
+    @blueprint_users.response(status_code=200, schema=SchemaGetUser)
     def get(self, email):
         user = db.session.query(ModelUser).filter_by(email=email).first()
 
         if not user:
             return {"message": f"User not found - {email}"}, 404
 
-        return user
+        access_token = create_access_token(identity=user.email)
+        return {"email": email, "role": user.role, "token": access_token}
 
 
 @blueprint_users.route("/user")
