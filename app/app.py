@@ -21,6 +21,11 @@ with server.app_context():
     init_tables(db)
 
 
+@server.errorhandler(Exception)
+def handle_exception(e):
+    return {"message": f"An unexpected error occurred. {e}"}, 500
+
+
 api.register_blueprint(blueprint_users)
 api.register_blueprint(blueprint_policies)
 api.register_blueprint(blueprint_hibp)
