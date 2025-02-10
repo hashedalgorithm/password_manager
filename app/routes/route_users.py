@@ -25,7 +25,7 @@ class CollectionUserId(MethodView):
         access_token = create_access_token(
             identity=user.email,
             expires_delta=timedelta(hours=1),
-            additional_claims={"email": user.email, "role": user.role}
+            additional_claims={"email": user.email, "role": user.role.value}
         )
 
         return {"email": email, "token": access_token}
