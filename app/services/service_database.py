@@ -24,14 +24,17 @@ def inti_users(db):
             created_at TEXT NOT NULL
         )
     '''))
-    admin = ModelUser(
-        email='system@admin.com',
-        name='admin',
-        role=UserRole.ADMIN.value,
-        created_at=datetime.now().isoformat()
-    )
 
-    db.session.add(admin)
+    existing_admin = db.session.execute(text(
+        'SELECT * FROM users WHERE email = :email'), {'email': 'system@admin.com'}).fetchone()
+    if not existing_admin:
+        admin = ModelUser(
+            email='system@admin.com',
+            name='admin',
+            role=UserRole.ADMIN,
+            created_at=datetime.now().isoformat()
+        )
+        db.session.add(admin)
 
 
 def init_policies(db):
