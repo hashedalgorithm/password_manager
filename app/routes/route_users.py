@@ -2,7 +2,7 @@ from flask.views import MethodView
 from flask_smorest import Blueprint
 from marshmallow.schema import Schema
 from marshmallow import fields
-from datetime import datetime
+from datetime import timedelta
 from app.database import db
 from app.schemas import SchemaUser, SchemaPostUser, SchemaGetUser
 from app.models import UserRole, ModelUser
@@ -22,7 +22,11 @@ class CollectionUserId(MethodView):
         if not user:
             return {"message": f"User not found - {email}"}, 404
 
-        access_token = create_access_token(identity=user.email)
+        access_token = create_access_token(
+            identity=user.email,
+            expires_delta=timedelta(hours=1),
+            additional_claims={"email": user.email, "role": user.role}
+        )
 
         return {"email": email, "token": access_token}
 
