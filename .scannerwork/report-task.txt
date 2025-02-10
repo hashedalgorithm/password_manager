@@ -2,5 +2,5 @@ projectKey=password_manager
 serverUrl=http://localhost:9000
 serverVersion=25.1.0.102122
 dashboardUrl=http://localhost:9000/dashboard?id=password_manager
-ceTaskId=d81f58bd-38f9-4acd-acac-ea779bfc6b31
-ceTaskUrl=http://localhost:9000/api/ce/task?id=d81f58bd-38f9-4acd-acac-ea779bfc6b31
+ceTaskId=ec6dc299-75bd-469a-b242-891e43a0b0ec
+ceTaskUrl=http://localhost:9000/api/ce/task?id=ec6dc299-75bd-469a-b242-891e43a0b0ec

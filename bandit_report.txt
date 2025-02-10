@@ -1,6 +1,26 @@
-Run started:2025-01-20 08:56:15.829156
+Run started:2025-02-10 18:42:54.265380
 
 Test results:
+>> Issue: [B105:hardcoded_password_string] Possible hardcoded password: 'jwt_secret'
+   Severity: Low   Confidence: Medium
+   CWE: CWE-259 (https://cwe.mitre.org/data/definitions/259.html)
+   More Info: https://bandit.readthedocs.io/en/1.8.2/plugins/b105_hardcoded_password_string.html
+   Location: ./app/config.py:12:17
+11	    SQLALCHEMY_TRACK_MODIFICATIONS = False
+12	    SECRET_KEY = "jwt_secret"
+13	    JWT_SECRET_KEY = "this is a secret key"
+
+--------------------------------------------------
+>> Issue: [B105:hardcoded_password_string] Possible hardcoded password: 'this is a secret key'
+   Severity: Low   Confidence: Medium
+   CWE: CWE-259 (https://cwe.mitre.org/data/definitions/259.html)
+   More Info: https://bandit.readthedocs.io/en/1.8.2/plugins/b105_hardcoded_password_string.html
+   Location: ./app/config.py:13:21
+12	    SECRET_KEY = "jwt_secret"
+13	    JWT_SECRET_KEY = "this is a secret key"
+14	    JWT_TOKEN_LOCATION = ["headers"]
+
+--------------------------------------------------
 >> Issue: [B324:hashlib] Use of weak SHA1 hash for security. Consider usedforsecurity=False
    Severity: High   Confidence: High
    CWE: CWE-327 (https://cwe.mitre.org/data/definitions/327.html)
@@ -71,21 +91,51 @@ Test results:
 7	
 
 --------------------------------------------------
+>> Issue: [B105:hardcoded_password_string] Possible hardcoded password: 'password123'
+   Severity: Low   Confidence: Medium
+   CWE: CWE-259 (https://cwe.mitre.org/data/definitions/259.html)
+   More Info: https://bandit.readthedocs.io/en/1.8.2/plugins/b105_hardcoded_password_string.html
+   Location: ./tests/test_ihbp.py:37:26
+36	        # Test GET /api/hibp/check/<password> with a leaked password
+37	        leaked_password = "password123"  # Example of a commonly leaked password
+38	        response = self.client.get(f'/api/hibp/check/{leaked_password}')
+
+--------------------------------------------------
+>> Issue: [B105:hardcoded_password_string] Possible hardcoded password: 'UniquePassword123!'
+   Severity: Low   Confidence: Medium
+   CWE: CWE-259 (https://cwe.mitre.org/data/definitions/259.html)
+   More Info: https://bandit.readthedocs.io/en/1.8.2/plugins/b105_hardcoded_password_string.html
+   Location: ./tests/test_ihbp.py:48:30
+47	        # Test GET /api/hibp/check/<password> with a non-leaked password
+48	        non_leaked_password = "UniquePassword123!"  # Example of a non-leaked password
+49	        response = self.client.get(f'/api/hibp/check/{non_leaked_password}')
+
+--------------------------------------------------
+>> Issue: [B105:hardcoded_password_string] Possible hardcoded password: ''
+   Severity: Low   Confidence: Medium
+   CWE: CWE-259 (https://cwe.mitre.org/data/definitions/259.html)
+   More Info: https://bandit.readthedocs.io/en/1.8.2/plugins/b105_hardcoded_password_string.html
+   Location: ./tests/test_ihbp.py:59:27
+58	        # Test GET /api/hibp/check/<password> with an invalid password format
+59	        invalid_password = ""  # An empty string or other invalid format could be tested
+60	        response = self.client.get(f'/api/hibp/check/{invalid_password}')
+
+--------------------------------------------------
 
 Code scanned:
-	Total lines of code: 502
+	Total lines of code: 769
 	Total lines skipped (#nosec): 0
 	Total potential issues skipped due to specifically being disabled (e.g., #nosec BXXX): 0
 
 Run metrics:
 	Total issues (by severity):
 		Undefined: 0
-		Low: 5
+		Low: 10
 		Medium: 1
 		High: 1
 	Total issues (by confidence):
 		Undefined: 0
 		Low: 1
-		Medium: 0
+		Medium: 5
 		High: 6
 Files skipped (0):
